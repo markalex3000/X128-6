@@ -1,4 +1,4 @@
-// Guess user number between 1 and 100
+// input a single digit or a number word and output the other
 
 #include <iostream>
 #include <string>
