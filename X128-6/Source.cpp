@@ -22,40 +22,42 @@ int main() {
 	char tester{ 0 };
 	int digit{ -1 };
 	string number{ "empty" };
+	string s_buffer{};
 	vector<string> number_strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
 	while (true) {
 		cout << "Enter a number string or digit: ";
-		cin >> tester;
 		found_it = false;
-		if (cin.fail()) simple_error("Operation cin has failed in some fashion\n");
-		else {
-			if (tester >= '0' && tester <= '9') {
-				cin.putback(tester);
-				cin >> digit;
-				if (digit >= 0 && digit <= 9) {
-					cout << "The sting version is: " << number_strings[digit] << "\n";
-					found_it = true;
-					continue;
-				}
-				else {
-					simple_error("That number is too big!");
-				}
-			}
-			else cin.putback(tester);
-		}
-		cin >> number;
-		for (int i = 0; i <= 9; i++) {
-			if (number == number_strings[i]) {
-				cout << "The string you entered ( " << number << " ) is " << i << "\n";;
+
+		cin >> s_buffer;
+
+		// test length of s_buffer.  if 1 might have a single digit, else might have a valid number string
+
+		if (s_buffer.length() == 1) {   // check to see if a valid digit
+			if (s_buffer[0] >= '0' && s_buffer[0] <= '9') {
+				cout << "The sting version is: " << number_strings[s_buffer[0] - 48] << "\n";
 				found_it = true;
-				break;
+				continue;
+			}
+			else { //we have a bad digit - that is not a number
+				cout << "\" " << s_buffer << " \" is not an acceptable digit! \n\n";
+				found_it = false;
+				continue;
 			}
 		}
-		if (!found_it) {
-			cout << "string: " << number << "\n";
-			simple_error("\nThe string you entered is unrecognized! \n");
+		else { // we might have a valid number string
+			for (int i = 0; i <= 9; i++) {
+				if (s_buffer == number_strings[i]) {  // we have a match
+					cout << "The string you entered ( " << s_buffer << " ) is " << i << "\n";;
+					found_it = true;
+					break;
+				}
 			}
+			if (!found_it) {  // we checked and we don't have a match
+				cout << "string: " << s_buffer << " - ";
+				simple_error("\nThe string you entered is unrecognized! \n\n");
+			}
+		}
 	}
 	keep_window_open();
 }
